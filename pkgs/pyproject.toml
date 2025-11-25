@@ -1,0 +1,14 @@
+[build-system]
+requires = ["uv_build>=0.8.13,<0.9"]
+build-backend = "uv_build"
+
+[project]
+name = "pkgs"
+version = "0.0.1"
+description = "Code required for deep learning of the GMGM"
+requires-python = ">=3.12"
+dependencies = []
+
+[tool.setuptools.packages.find]
+where   = ["src"]
+include = ["pkgs*"]
