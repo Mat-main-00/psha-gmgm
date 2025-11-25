@@ -216,3 +216,4 @@ __marimo__/
 .settings/
 
 data/all_file_name_split_norm_cut_8192_rotation_45_data.csv
+*log*.txt
