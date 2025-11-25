@@ -13,6 +13,9 @@ Input:
 
 The trained model parameter files are not provided in this repository.
 Running this script requires a GMGM .pth file that you have trained on your own dataset.
+
+This script is an example for the CS-GMGM.
+For the S-GMGM and CW-GMGM, the same script was applied for calculations.
 """
 
 from pathlib import Path
