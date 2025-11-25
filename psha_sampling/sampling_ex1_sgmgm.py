@@ -1,15 +1,7 @@
 """
-2025-11-13
+2025-08-13
 
-Assume a single area source for PSHA.
-Run with two GPUs.
-Model used: S-GMGM
-
-Execution environment:
-    OS: Ubuntu 24.04 LTS
-    GPU: NVIDIA RTX 6000 Ada
-
-サンプリングを早くするために，先にカタログを作ってしまう
+PSHA sampling based on the S-GMGM for numerical example 1.
 """
 
 import time
@@ -171,10 +163,8 @@ for part_id, part_idx in enumerate(split_indices, start=1):
     r_low = r_target - r_diff
     r_high = r_target + r_diff
 
-    # このブロック内で「まだ埋まっていないイベント」
     assigned = np.zeros(n_part, dtype=bool)
 
-    # 波形・ラベル格納用（長さ n_part のリスト）
     part_wave_list = [None] * n_part
     part_label_list = [None] * n_part
 
@@ -199,7 +189,6 @@ for part_id, part_idx in enumerate(split_indices, start=1):
         save_acc = f_wave.squeeze().to("cpu").detach().numpy()
         gen_pga = 10 ** data_transform.denorm_data(n_fake_label[:, 2], obs_log10_pga_list)
 
-        # まだ埋まっていないイベント
         remaining = np.where(~assigned)[0]
         if len(remaining) == 0:
             break
@@ -212,7 +201,6 @@ for part_id, part_idx in enumerate(split_indices, start=1):
             r_c = gen_r[ci]
             vs_c = gen_vs30[ci]
 
-            # 未割当イベントに対して Mw, R のウィンドウ判定
             mw_low_rem = mw_low[remaining]
             mw_high_rem = mw_high[remaining]
             r_low_rem = r_low[remaining]
@@ -225,11 +213,10 @@ for part_id, part_idx in enumerate(split_indices, start=1):
             if not np.any(match_mask):
                 continue
 
-            # マッチしたイベント候補から 1 つ選ぶ（ランダム）
             possible_events = remaining[match_mask]
-            ev_idx = rng.choice(possible_events)  # 0〜n_part-1 のインデックス
+            ev_idx = rng.choice(possible_events)
 
-            # 波形・ラベルを保存
+            # Save
             acc = save_acc[ci].squeeze()[None, :]  # shape (1, 8192)
             lab = np.array([mw_c, r_c, gen_pga[ci], vs_c], dtype=float).reshape(1, -1)
 
@@ -248,18 +235,14 @@ for part_id, part_idx in enumerate(split_indices, start=1):
     else:
         print(f"Part {part_id} completed.")
 
-    # リスト → 配列に変換
-    wave_arr = np.concatenate(part_wave_list, axis=0)  # shape: (n_part, 8192)
-    label_arr = np.concatenate(part_label_list, axis=0)  # shape: (n_part, 4)
+    wave_arr = np.concatenate(part_wave_list, axis=0)
+    label_arr = np.concatenate(part_label_list, axis=0)
 
-    # 波形
     np.save(save_dir / f"sample_wave_sgmgm_part_{part_id}.npy", wave_arr)
 
-    # 生成されたラベル（Mw_gen, R_gen, PGA, Vs30）
     label_df = pd.DataFrame(label_arr, columns=["mw_gen", "fault_dist_gen", "gen_pga", "v30_gen"])
     label_df.to_csv(save_dir / f"sample_label_sgmgm_part_{part_id}.csv", index=False)
 
-    # 元カタログ情報（どのシミュレーション・どのイベントだったか）
     meta_df = part_df[["sim_num", "case_num", "mw", "r", "vs30"]].copy()
     meta_df.to_csv(save_dir / f"sample_ind_sgmgm_part_{part_id}.csv", index=False)
 
