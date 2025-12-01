@@ -2,7 +2,10 @@
 
 This repository contains the code and hyperparameters for the paper:
 
-...
+**Waveform-Based Probabilistic Seismic Hazard Analysis Using Ground-Motion Generative Models**\
+Yuma Matsumoto, Taro Yaoyama, Sangwon Lee, Asako Iwaki, and Tatsuya Itoi\
+arXiv:2511.22106 (2025)\
+https://arxiv.org/abs/2511.22106
 
 Please cite the paper if you use this repository as part of a published research project.
 
