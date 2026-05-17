@@ -4,8 +4,8 @@ This repository contains the code and hyperparameters for the paper:
 
 **Waveform-Based Probabilistic Seismic Hazard Analysis Using Ground-Motion Generative Models**\
 Yuma Matsumoto, Taro Yaoyama, Sangwon Lee, Asako Iwaki, and Tatsuya Itoi\
-arXiv:2511.22106 (2025)\
-https://arxiv.org/abs/2511.22106
+Bulletin of the Seismological Society of America (2026)\
+https://doi.org/10.1785/0120250269
 
 Please cite the paper if you use this repository as part of a published research project.
 
@@ -81,14 +81,14 @@ To train the GMGM, you must prepare the dataset in advance.
 
 - Replace the contents of each `dataset_*.csv` with your own dataset.
 - Header fields of `dataset_*.csv`:
-  - `file_name`: Path to the `.npy` file containing amplitude-normalized ground-motion data.
-  - `log10_pga`: Common logarithm of the Peak Ground Acceleration (PGA) of the corresponding ground‑motion data.
-  - `mw`: Moment magnitude, $$M_W$$
-  - `log10_v30`: Common logarithm of $$V\_{\\mathrm{S}30}$$ (original unit: m/s)
-  - `log_fault_dist`: Natural logarithm of rupture distance, $$R\_{\\mathrm{RUP}}$$ (original unit: km)
+    - `file_name`: Path to the `.npy` file containing amplitude-normalized ground-motion data.
+    - `log10_pga`: Common logarithm of the Peak Ground Acceleration (PGA) of the corresponding ground‑motion data.
+    - `mw`: Moment magnitude, $$M_W$$
+    - `log10_v30`: Common logarithm of $$V\_{\\mathrm{S}30}$$ (original unit: m/s)
+    - `log_fault_dist`: Natural logarithm of rupture distance, $$R\_{\\mathrm{RUP}}$$ (original unit: km)
 - Structure of `example_*.npy` files:
-  - Each file contains a one-dimensional array of ground-motion time-history data.
-  - The array length equals the number of time steps in the record.
+    - Each file contains a one-dimensional array of ground-motion time-history data.
+    - The array length equals the number of time steps in the record.
 
 ## License
 
